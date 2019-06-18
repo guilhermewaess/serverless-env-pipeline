@@ -1,0 +1,27 @@
+version: 2
+jobs:
+ build:
+   docker:
+     - image: 'circleci/node:11.0.0'
+   steps:
+     - checkout
+     - run:
+         name: install yarn
+         command: |
+           sudo npm i -g yarn
+     - restore_cache:
+         key: dependency-cache-{{ checksum "package.json" }}
+     - run:
+         name: install dependencies
+         command: |
+           yarn
+     - deploy:
+         name: deploy
+         command: |
+           if [ "${CIRCLE_BRANCH}" == "master" ]; then
+             yarn deploy
+           fi
+     - save_cache:
+         key: dependency-cache-{{ checksum "package.json" }}
+         paths:
+           - ./node_modules

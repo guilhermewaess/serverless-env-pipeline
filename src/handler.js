@@ -4,7 +4,7 @@ export async function helloWorld(event) {
   return {
     statusCode: 200,
     body: JSON.stringify({
-      message: 'Go Serverless v1.0! Your function executed successfully!',
+      message: process.env.MESSAGE,
       input: event,
     }, null, 2),
   };

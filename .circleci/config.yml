@@ -19,7 +19,9 @@ jobs:
          name: deploy
          command: |
            if [ "${CIRCLE_BRANCH}" == "master" ]; then
-             yarn deploy
+             yarn deploy:prod
+           elif [ "${CIRCLE_BRANCH}" == "develop" ]; then
+             yarn deploy:dev
            fi
      - save_cache:
          key: dependency-cache-{{ checksum "package.json" }}

@@ -11,7 +11,7 @@
 #
 # Happy Coding!
 
-service: aws-nodejs # NOTE: update this with your service name
+service: server-env-config # NOTE: update this with your service name
 #app: your-app-name
 #tenant: your-tenant-name
 
@@ -19,11 +19,23 @@ service: aws-nodejs # NOTE: update this with your service name
 # Check out our docs for more details
 # frameworkVersion: "=X.X.X"
 
+custom:
+  myStage: ${opt:stage, self:provider.stage}
+  myEnvironment:
+    MESSAGE:
+      prod: "This is production environment"
+      dev: "This is development environment"
+  webpack:
+    webpackConfig: ./webpack.config.js
+    includeModules: true
+
 provider:
   name: aws
   runtime: nodejs10.x
-  stage: stage
+  stage: dev
   region: eu-central-1
+  environment:
+    MESSAGE: ${self:custom.myEnvironment.MESSAGE.${self:custom.myStage}}
 
 plugins:
   - serverless-webpack
@@ -31,11 +43,6 @@ plugins:
 
 package:
   individually: true
-
-custom:
-  webpack:
-    webpackConfig: ./webpack.config.js
-    includeModules: true
 
 functions:
   helloWorld:

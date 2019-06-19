@@ -20,11 +20,15 @@ service: server-env-config # NOTE: update this with your service name
 # frameworkVersion: "=X.X.X"
 
 custom:
-  myStage: ${opt:stage, self:provider.stage}
-  myEnvironment:
+  stage: ${opt:stage, 'DEV'}
+  environment:
     MESSAGE:
-      prod: "This is production environment"
-      dev: "This is development environment"
+      PROD: "This is production environment"
+      DEV: "This is development environment"
+      LOCAL: "This is local environment"
+    SECRETS:
+      DB: ${env:DB_${self:custom.stage}, file(local-secrets.yml):db}
+      FIREBASE: ${env:FB_${self:custom.stage}, file(local-secrets.yml):firebase}
   webpack:
     webpackConfig: ./webpack.config.js
     includeModules: true
@@ -32,10 +36,12 @@ custom:
 provider:
   name: aws
   runtime: nodejs10.x
-  stage: dev
+  stage: ${self:custom.stage}
   region: eu-central-1
   environment:
-    MESSAGE: ${self:custom.myEnvironment.MESSAGE.${self:custom.myStage}}
+    MESSAGE: ${self:custom.environment.MESSAGE.${self:custom.stage}}
+    DB: ${self:custom.environment.SECRETS.DB}
+    FIREBASE: ${self:custom.environment.SECRETS.FIREBASE}
 
 plugins:
   - serverless-webpack

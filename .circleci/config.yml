@@ -26,9 +26,9 @@ jobs:
          name: deploy
          command: |
            if [ "${CIRCLE_BRANCH}" == "master" ]; then
-             serverless deploy --verbose --stage DEV
-           elif [ "${CIRCLE_BRANCH}" == "develop" ]; then
              serverless deploy --verbose --stage PROD
+           elif [ "${CIRCLE_BRANCH}" == "develop" ]; then
+             serverless deploy --verbose --stage DEV
            fi
       - save_cache:
           key: dependency-cache-{{ checksum "package.json" }}

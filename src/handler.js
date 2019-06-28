@@ -7,7 +7,7 @@ export async function helloWorld(event) {
       message: process.env.MESSAGE,
       db: process.env.DB || "Err",
       firebase: process.env.FIREBASE || "Err",
-      input: event,
+      version: 1
     }, null, 2),
   };
 };

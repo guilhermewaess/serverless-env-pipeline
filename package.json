@@ -6,9 +6,7 @@
   "author": "Guilherme Waess <guilherme.waess@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "start": "serverless offline start --stage LOCAL",
-    "deploy:dev": "serverless deploy --verbose --stage DEV",
-    "deploy:prod": "serverless deploy --verbose --stage PROD"
+    "start": "serverless offline start --stage LOCAL"
   },
   "devDependencies": {
     "@babel/cli": "^7.4.3",

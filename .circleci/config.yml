@@ -20,13 +20,13 @@ jobs:
           command: |
             yarn
       - deploy:
-          name: Production
-          branch: 'master'
-          command: yarn run deploy:prod
-      - deploy:
-          name: Develop
-          branch: 'develop'
-          command: yarn run deploy:dev
+         name: deploy
+         command: |
+           if [ "${CIRCLE_BRANCH}" == "master" ]; then
+             yarn deploy:prod
+           elif [ "${CIRCLE_BRANCH}" == "develop" ]; then
+             yarn deploy:dev
+           fi
       - save_cache:
           key: dependency-cache-{{ checksum "package.json" }}
           paths:

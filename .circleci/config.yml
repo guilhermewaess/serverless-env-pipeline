@@ -1,29 +1,36 @@
 version: 2
+dependencies:
+  cache_directories:
+    - ~/.yarn-cache
+  override:
+    - yarn
 jobs:
- build:
-   docker:
-     - image: 'circleci/node:11.0.0'
-   steps:
-     - checkout
-     - run:
-         name: install yarn
-         command: |
-           sudo npm i -g yarn
-     - restore_cache:
-         key: dependency-cache-{{ checksum "package.json" }}
-     - run:
-         name: install dependencies
-         command: |
-           yarn
-     - deploy:
+  build:
+    branches:
+      only:
+        - master
+        - develop
+    docker:
+      - image: 'circleci/node:11.0.0'
+    steps:
+      - checkout
+      - restore_cache:
+          key: dependency-cache-{{ checksum "package.json" }}
+      - run:
+          name: install dependencies
+          command: yarn
+      - run:
+          name: install serverless
+          command: sudo yarn global add serverless --no-save     
+      - deploy:
          name: deploy
          command: |
            if [ "${CIRCLE_BRANCH}" == "master" ]; then
-             yarn deploy:prod
+             serverless deploy --verbose --stage DEV
            elif [ "${CIRCLE_BRANCH}" == "develop" ]; then
-             yarn deploy:dev
+             serverless deploy --verbose --stage PROD
            fi
-     - save_cache:
-         key: dependency-cache-{{ checksum "package.json" }}
-         paths:
-           - ./node_modules
+      - save_cache:
+          key: dependency-cache-{{ checksum "package.json" }}
+          paths:
+            - ./node_modules

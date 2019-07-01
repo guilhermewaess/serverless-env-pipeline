@@ -1,3 +1,3 @@
 *This repo is the base for the medium article: Serverless-Development-Workflow.
 
-** The article is on revision right now, should be dropping on next stage on the first day of next week
+https://medium.com/@guilherme.waess/serverless-development-workflow-51a856cd316a
